@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #433ED1;
+    --color-gradient-start: #226BC6;
+    --color-gradient-end: #433ED1;
+    --color-grid-bg: #06587D;
+    --color-grid-glow: #228BC6;
+    --color-dark-text: #002C42;
+    --color-card-bg: #FFFFFF;
+    --font-outfit: "Outfit", sans-serif;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-outfit);
+    }
+}
+
+@tailwind utilities;
