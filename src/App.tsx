@@ -4,6 +4,7 @@ import Master from "./Pages/Master/Master";
 import Sidebar from "./layouts/Sidebar";
 import Navbar from "./layouts/Navbar";
 import AddCompany from "./component/AddCompany";
+import Dashboard from "./Pages/Master/Dashboard";
 
 function AppLayout() {
   const location = useLocation();
@@ -15,31 +16,20 @@ function AppLayout() {
   );
 
   return (
-    <div className="w-full min-h-screen bg-slate-200">
+    <div className="w-full min-h-screen bg-slate-100">
       {/* Navbar */}
-      {!isHiddenRoute && (
-        <div className="fixed top-0 left-0 w-full z-50">
-          <Navbar />
-        </div>
-      )}
-
       <div className="flex">
         {/* Sidebar */}
-        {!isHiddenRoute && (
-          <div className="fixed top-[64px] left-0 h-[calc(100%-64px)] shadow-md w-64">
-            <Sidebar />
-          </div>
-        )}
+        <div className="fixed left-0 h-[calc(100%)] shadow-md w -64">
+          <Sidebar />
+        </div>
 
         {/* Content */}
-        <div
-          className={`w-full min-h-screen overflow-y-auto
-          ${isHiddenRoute ? "pt-0" : "pt-[64px]"}
-          ${!isHiddenRoute ? "pl-64 max-sm:pl-16" : ""}`}
-        >
+        <div className="w-full min-h-screen overflow-y-auto">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/master" element={<Master />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/add-company" element={<AddCompany />} />
 
           </Routes>

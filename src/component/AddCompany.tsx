@@ -40,7 +40,7 @@ function AddCompany(): React.ReactElement {
     };
 
     return (
-        <div className="max-w-[1200px] mx-auto px-4 py-8">
+    <div className="ml-64 px-6 py-8 min-h-screen">
             {/* Page Title */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">

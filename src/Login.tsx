@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import AxiosInstance from './utilits/axiosInstance';
 import login2 from "./assets/login-2.png"
 import logo from "./assets/logo.png"
 import visionx from "./assets/quantum vision x.png"
@@ -8,10 +9,40 @@ import visionx from "./assets/quantum vision x.png"
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const emailInputRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    useEffect(() => {
+        if (emailInputRef.current) {
+            emailInputRef.current.focus();
+        }
+    }, []);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Login attempt:', { email, password });
+        try {
+            const response = await AxiosInstance.post("/auth/login", {
+                email,
+                password,
+            });
+
+            console.log("Login success:", response.data);
+
+            const { accessToken, refreshToken, user } = response.data;
+
+            sessionStorage.setItem("token", accessToken);
+            sessionStorage.setItem("refreshToken", refreshToken);
+            sessionStorage.setItem("user", JSON.stringify(user));
+
+            // Assuming the dashboard route is /master based on previous context
+            // Adjust if it is /dashboard
+            navigate("/master");
+
+        } catch (error) {
+            console.error("Login failed:", error);
+            alert("Login failed. Please check your credentials.");
+        }
     };
 
     return (
@@ -55,6 +86,7 @@ const Login: React.FC = () => {
                                 Email
                             </label>
                             <input
+                                ref={emailInputRef}
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -77,14 +109,14 @@ const Login: React.FC = () => {
                                 required
                             />
                         </div>
-                        <Link to="/master">
-                            <button
-                                // type="submit"
-                                className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
-                            >
-                                Sign In
-                            </button>
-                        </Link>
+
+                        <button
+                            // type="submit"
+                            className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
+                        >
+                            Sign In
+                        </button>
+
 
                         <p className="text-sm text-gray-500 text-center mt-6 ">
                             <Link to="/forget-password" className="text-indigo-600 font-medium">

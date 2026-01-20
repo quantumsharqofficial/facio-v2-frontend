@@ -1,20 +1,21 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
   CalendarClock,
   Package,
-  Settings,
   UserCircle,
   BarChart2,
   LogOut,
+  Menu,
+  X,
+  Smartphone,
 } from "lucide-react";
 import logo from "../assets/logo.png";
 
 /* ================= TYPES ================= */
-
-type UserRole = "master" | "admin" | "customer";
+type UserRole = "SUPER_ADMIN" | "COMPANY_ADMIN" | "HR" | "MANAGER" | "EMPLOYEE";
 
 interface User {
   role: UserRole;
@@ -27,11 +28,16 @@ interface SidebarLink {
 }
 
 /* ================= COMPONENT ================= */
-
 const Sidebar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-  // ✅ sessionStorage null-safe parsing
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/");
+  };
+
   const user: User | null = (() => {
     try {
       const stored = sessionStorage.getItem("user");
@@ -41,82 +47,122 @@ const Sidebar: React.FC = () => {
     }
   })();
 
-  const userRole = user?.role;
-
-  /* ================= LINKS ================= */
+  const userRole = user?.role ?? "SUPER_ADMIN";
 
   const linksByRole: Record<UserRole, SidebarLink[]> = {
-    master: [
+    SUPER_ADMIN: [
       { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Customer Management", path: "/master", icon: Users },
-      // { name: "Settings", path: "/settings", icon: Settings },
+      { name: "Customer", path: "/master", icon: Users },
+      { name: "Facio", path: "/facio", icon: Smartphone },
     ],
-
-    admin: [
+    COMPANY_ADMIN: [
+      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Patients", path: "/patients", icon: UserCircle },
+      { name: "Appointments", path: "/appointments", icon: CalendarClock },
+      { name: "Inventory", path: "/inventory", icon: Package },
+      { name: "Reports", path: "/admin/reports", icon: BarChart2 },
+    ], HR: [
+      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Patients", path: "/patients", icon: UserCircle },
+      { name: "Appointments", path: "/appointments", icon: CalendarClock },
+      { name: "Inventory", path: "/inventory", icon: Package },
+      { name: "Reports", path: "/admin/reports", icon: BarChart2 },
+    ], MANAGER: [
       { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
       { name: "Patients", path: "/patients", icon: UserCircle },
       { name: "Appointments", path: "/appointments", icon: CalendarClock },
       { name: "Inventory", path: "/inventory", icon: Package },
       { name: "Reports", path: "/admin/reports", icon: BarChart2 },
     ],
-
-    customer: [
+    EMPLOYEE: [
       { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
       { name: "My Profile", path: "/profile", icon: UserCircle },
       { name: "History", path: "/history", icon: CalendarClock },
-    ]
+    ],
   };
 
-  // Default fallback (e.g., if no role or dev mode, show Master view)
-  const defaultLinks: SidebarLink[] = linksByRole.master;
-
-  const sidebarLinks: SidebarLink[] =
-    userRole && linksByRole[userRole] ? linksByRole[userRole] : defaultLinks;
-
-  /* ================= UI ================= */
+  const sidebarLinks = linksByRole[userRole];
 
   return (
-    <aside className="bg-white h-full border-r border-slate-200 flex flex-col justify-between w-full transition-all duration-300">
-      <div>
-        <ul className="space-y-1 p-4">
+    <>
+      {/* ================= MOBILE TOP BAR ================= */}
+      <div className="md:hidden flex items-center px-4 py-3 border-b bg-white sticky top-0 z-40">
+        <button onClick={() => setOpen(true)}>
+          <Menu size={24} />
+        </button>
+      </div>
+
+      {/* ================= OVERLAY ================= */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* ================= SIDEBAR ================= */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-screen bg-white border-r z-50
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+          w-20 md:w-64
+        `}
+      >
+        {/* Top */}
+        <div className="flex items-center justify-center md:justify-between px-4 py-5 border-b">
+          <img src={logo} alt="logo" className="h-10 hidden md:block" />
+          <button className="md:hidden" onClick={() => setOpen(false)}>
+            <X size={22} />
+          </button>
+        </div>
+
+        {/* Links */}
+        <ul className="flex flex-col items-center md:items-stretch px-2 md:px-3 py-4 space-y-2">
           {sidebarLinks.map((link) => {
-            const isActive = location.pathname === link.path || location.pathname.startsWith(link.path + "/");
+            const isActive =
+              location.pathname === link.path ||
+              location.pathname.startsWith(link.path + "/");
 
             return (
-              <li key={link.path}>
+              <li key={link.path} className="w-full">
                 <Link
                   to={link.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium group
+                  onClick={() => setOpen(false)}
+                  className={`
+                    flex items-center justify-center md:justify-start
+                    gap-3 py-3 px-3 rounded-xl text-sm font-medium transition
                     ${isActive
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20"
-                      : "text-slate-400 hover:bg-slate-800 hover:text-slate-100"
-                    }`}
+                      ? "bg-indigo-50 text-indigo-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}
+                  `}
                 >
-                  <link.icon
-                    size={20}
-                    className={`${isActive ? "text-white" : "text-slate-400 group-hover:text-slate-300"}`}
-                  />
-                  <span className="text-sm">
-                    {link.name}
-                  </span>
+                  <link.icon size={20} />
+                  {/* Desktop text only */}
+                  <span className="hidden md:block">{link.name}</span>
                 </Link>
               </li>
             );
           })}
         </ul>
-      </div>
 
-      <div className="p-4 ">
-        {/* Logo */}
-        <div className=" flex items-center justify-center bor der-b border-slate-800 p-2">
-          <img src={logo} alt="facio" className="h-16 object-contain" />
+        {/* Bottom */}
+        <div className="absolute bottom-0 w-full p-2 md:p-4 border-t bg-white">
+          <button
+            onClick={handleLogout}
+            className="
+              flex items-center justify-center md:justify-start
+              gap-3 w-full px-3 py-3 rounded-xl text-sm font-medium
+              text-red-600 hover:bg-red-50 transition
+            "
+          >
+            <LogOut size={20} />
+            <span className="hidden md:block">Logout</span>
+          </button>
         </div>
-        <button className="flex items-center border border-slate-200 gap-3 w-full px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors">
-          <LogOut size={20} />
-          <span className="text-sm font-medium">Logout</span>
-        </button>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 
