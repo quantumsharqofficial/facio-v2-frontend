@@ -3,6 +3,7 @@ import Login from "./Login";
 import Master from "./Pages/Master/Master";
 import Sidebar from "./layouts/Sidebar";
 import Navbar from "./layouts/Navbar";
+import AddCompany from "./component/AddCompany";
 
 function AppLayout() {
   const location = useLocation();
@@ -39,6 +40,8 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/master" element={<Master />} />
+            <Route path="/add-company" element={<AddCompany />} />
+
           </Routes>
         </div>
       </div>
