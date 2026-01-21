@@ -6,12 +6,32 @@ import login2 from "./assets/login-2.png"
 import logo from "./assets/logo.png"
 import visionx from "./assets/quantum vision x.png"
 
-const Login: React.FC = () => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const emailInputRef = useRef<HTMLInputElement>(null);
+    const emailInputRef = useRef(null);
+    const refreshToken = localStorage.getItem("refreshToken");
+    const user = localStorage.getItem("user");
+
+    const handleToken = async () => {
+        try {
+            const response = await AxiosInstance.post("auth/refresh-token", {
+                refreshToken,
+            });
+            console.log(response?.status);
+            if (response?.status === 200) {
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
+    }
+
+
 
     useEffect(() => {
+
+        handleToken();
         if (emailInputRef.current) {
             emailInputRef.current.focus();
         }
@@ -19,7 +39,7 @@ const Login: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await AxiosInstance.post("/auth/login", {
@@ -31,17 +51,16 @@ const Login: React.FC = () => {
 
             const { accessToken, refreshToken, user } = response.data;
 
-            sessionStorage.setItem("token", accessToken);
-            sessionStorage.setItem("refreshToken", refreshToken);
-            sessionStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("token", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("user", JSON.stringify(user));
 
             // Assuming the dashboard route is /master based on previous context
             // Adjust if it is /dashboard
-            navigate("/master");
+            navigate("/dashboard");
 
         } catch (error) {
             console.error("Login failed:", error);
-            alert("Login failed. Please check your credentials.");
         }
     };
 

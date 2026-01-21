@@ -11,16 +11,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Edit2, Trash2, Eye } from "lucide-react";
 
-interface CustomerData {
-  id: number;
-  name: string;
-  email: string;
-  status: "Active" | "Inactive";
-  joined: string;
-}
 
-const Customer: React.FC = () => {
-  const [customerData] = useState<CustomerData[]>([
+
+const Customer = () => {
+  const [customerData] = useState([
     { id: 1, name: "Arun Kumar", email: "arun.k@example.com", status: "Active", joined: "Jan 12, 2024" },
     { id: 2, name: "Siva Prakash", email: "siva.p@example.com", status: "Active", joined: "Jan 15, 2024" },
     { id: 3, name: "Ramesh", email: "ramesh@example.com", status: "Inactive", joined: "Feb 02, 2024" },

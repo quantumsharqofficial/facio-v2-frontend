@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const AxiosInstance = axios.create({
   baseURL: "http://localhost:4000/api",
@@ -9,8 +9,8 @@ const AxiosInstance = axios.create({
 });
 
 AxiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = sessionStorage.getItem("token");
+  (config) => {
+    const token = localStorage.getItem("token");
     if (token) {
       if (config.headers) {
         config.headers.Authorization = `Bearer ${token}`;

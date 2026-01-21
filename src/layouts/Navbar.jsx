@@ -3,23 +3,20 @@ import { LogOut, Bell, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 // import { toast } from "sonner"; // Commented out standard toast for now if not installed, or assume installed. Kept safe.
 
-interface NavbarProps {
-  toggleSidebar?: () => void;
-  collapsed?: boolean;
-}
 
-const Navbar: React.FC<NavbarProps> = () => {
+
+const Navbar = () => {
   const navigate = useNavigate();
   // Safe parsing
-  let user: any = {};
+  let user = {};
   try {
-    user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    user = JSON.parse(localStorage.getItem("user") || "{}");
   } catch (e) {
     user = {};
   }
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     // toast.success("Logout successful!");
     navigate("/");
   };

@@ -1,18 +1,9 @@
-import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import React, { useState } from "react";
 
-interface CompanyFormData {
-    companyName: string;
-    email: string;
-    phone: string;
-    password: string;
-    address: string;
-    city: string;
-    state: string;
-    zipCode: string;
-}
 
-function AddCompany(): React.ReactElement {
-    const [formData, setFormData] = useState<CompanyFormData>({
+
+function AddCompany() {
+    const [formData, setFormData] = useState({
         companyName: "",
         email: "",
         phone: "",
@@ -24,8 +15,8 @@ function AddCompany(): React.ReactElement {
     });
 
     const handleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ): void => {
+        e
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -33,14 +24,14 @@ function AddCompany(): React.ReactElement {
         }));
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         console.log("calling submit");
         console.log(formData);
     };
 
     return (
-    <div className="ml-64 px-6 py-8 min-h-screen">
+        <div className="ml-64 px-6 py-8 min-h-screen">
             {/* Page Title */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">

@@ -14,33 +14,22 @@ import {
 } from "lucide-react";
 import logo from "../assets/logo.png";
 
-/* ================= TYPES ================= */
-type UserRole = "SUPER_ADMIN" | "COMPANY_ADMIN" | "HR" | "MANAGER" | "EMPLOYEE";
 
-interface User {
-  role: UserRole;
-}
-
-interface SidebarLink {
-  name: string;
-  path: string;
-  icon: React.ElementType;
-}
 
 /* ================= COMPONENT ================= */
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 
-  const user: User | null = (() => {
+  const user = (() => {
     try {
-      const stored = sessionStorage.getItem("user");
+      const stored = localStorage.getItem("user");
       return stored ? JSON.parse(stored) : null;
     } catch {
       return null;
@@ -49,7 +38,7 @@ const Sidebar: React.FC = () => {
 
   const userRole = user?.role ?? "SUPER_ADMIN";
 
-  const linksByRole: Record<UserRole, SidebarLink[]> = {
+  const linksByRole = {
     SUPER_ADMIN: [
       { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
       { name: "Customer", path: "/master", icon: Users },

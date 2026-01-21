@@ -28,8 +28,8 @@ function AppLayout() {
         <div className="w-full min-h-screen overflow-y-auto">
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/master" element={<Master />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/master" element={<Master />} />
             <Route path="/add-company" element={<AddCompany />} />
 
           </Routes>
