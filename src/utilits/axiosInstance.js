@@ -2,7 +2,6 @@ import axios from "axios";
 
 const AxiosInstance = axios.create({
   baseURL: "http://localhost:4000/api",
-  // baseURL: "https://subhadental.quantumsharq.com/api", 
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,13 +18,11 @@ AxiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
 /* ================= RESPONSE INTERCEPTOR ================= */
-/* ================= RESPONSE INTERCEPTOR ================= */
+
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -37,29 +34,35 @@ const processQueue = (error, token = null) => {
       prom.resolve(token);
     }
   });
-
   failedQueue = [];
 };
 
 AxiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
+
   async (error) => {
     const originalRequest = error.config;
+    const status = error?.response?.status;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // 🔴 Only handle 401
+    if (status === 401 && !originalRequest._retry) {
+      // 🚫 Refresh token request itself failed → logout
+      if (originalRequest.url.includes("/auth/refresh-token")) {
+        localStorage.clear();
+        window.location.href = "/";
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
-        return new Promise(function (resolve, reject) {
+        //  Wait until refresh finishes
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            originalRequest.headers["Authorization"] = "Bearer " + token;
+            originalRequest.headers.Authorization = "Bearer " + token;
             return AxiosInstance(originalRequest);
           })
-          .catch((err) => {
-            return Promise.reject(err);
-          });
+          .catch((err) => Promise.reject(err));
       }
 
       originalRequest._retry = true;
@@ -68,32 +71,32 @@ AxiosInstance.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem("refreshToken");
 
-        // If no refresh token is available, logout immediately
         if (!refreshToken) {
-          throw new Error("No refresh token available");
+          throw new Error("Refresh token missing");
         }
 
+        // 🔁 Call refresh token API (use plain axios)
         const response = await axios.post(
-          // Use the base URL directly to avoid interceptors on the refresh call itself or use a separate instance
           `${AxiosInstance.defaults.baseURL}/auth/refresh-token`,
-          { refreshToken }
+          { refreshToken },
         );
 
-        const { accessToken } = response.data;
+        const { accessToken } = response.data.tokens;
 
+        // ✅ Save new token
         localStorage.setItem("token", accessToken);
 
-        AxiosInstance.defaults.headers.common["Authorization"] =
+        AxiosInstance.defaults.headers.common.Authorization =
           "Bearer " + accessToken;
 
         processQueue(null, accessToken);
 
-        originalRequest.headers["Authorization"] = "Bearer " + accessToken;
+        originalRequest.headers.Authorization = "Bearer " + accessToken;
         return AxiosInstance(originalRequest);
       } catch (err) {
         processQueue(err, null);
         localStorage.clear();
-        window.location.href = "/"; // Redirect to login
+        window.location.href = "/";
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
@@ -101,7 +104,7 @@ AxiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default AxiosInstance;

@@ -3,54 +3,97 @@ import {
   Search,
   Filter,
   Plus,
-
   Mail,
   Calendar,
   UserCircle,
+  Edit2,
+  Trash2,
+  Eye,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Edit2, Trash2, Eye } from "lucide-react";
 import AxiosInstance from "../../utilits/axiosInstance";
 
+/* ------------------ Debounce Hook ------------------ */
+const useDebounce = (value, delay = 500) => {
+  const [debounced, setDebounced] = useState(value);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+};
 
 const Customer = () => {
-  const [customerData] = useState([
-    { id: 1, name: "Arun Kumar", email: "arun.k@example.com", status: "Active", joined: "Jan 12, 2024" },
-    { id: 2, name: "Siva Prakash", email: "siva.p@example.com", status: "Active", joined: "Jan 15, 2024" },
-    { id: 3, name: "Ramesh", email: "ramesh@example.com", status: "Inactive", joined: "Feb 02, 2024" },
-    { id: 4, name: "Priya", email: "priya@example.com", status: "Active", joined: "Feb 10, 2024" },
-    { id: 5, name: "Anita Raj", email: "anita.r@example.com", status: "Active", joined: "Feb 18, 2024" },
-  ]);
-
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  const fetchCustomer = async () => {
+  /* ------------------ States ------------------ */
+  const [customerData, setCustomerData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+
+  const debouncedSearch = useDebounce(search);
+
+  /* ------------------ Fetch API ------------------ */
+  const fetchCustomer = async (isMounted) => {
     try {
-      const token = localStorage.getItem("token"); // or sessionStorage
+      if (!isMounted) return;
 
-      const response = await AxiosInstance.get("/companies", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      setLoading(true);
+
+      const res = await AxiosInstance.get("/companies", {
+        params: {
+          page,
+          limit,
+          search: debouncedSearch,
+          status,
         },
       });
-      console.log(response.data);
+
+      if (!isMounted) return; // 🚨 guard before setState
+
+      setCustomerData(res.data.result.data);
+      setTotalPages(res.data.result.pagination.totalPages);
     } catch (error) {
-      console.log(error.response?.data);
+      if (!isMounted) return;
+      console.error(error.response?.data);
+    } finally {
+      if (!isMounted) return;
+      setLoading(false);
     }
   };
 
+  /* ------------------ Effects ------------------ */
+  useEffect(() => {
+    setPage(1); // reset page on search/filter
+  }, [debouncedSearch, status]);
 
   useEffect(() => {
-    fetchCustomer()
-  }, [])
+    let isMounted = true; // ✅ flag
+
+    fetchCustomer(isMounted);
+
+    return () => {
+      isMounted = false; // 🧹 cleanup
+    };
+  }, [page, debouncedSearch, status]);
+
+  /* ------------------ UI ------------------ */
   return (
     <div className="ml-64 px-6 py-8 min-h-screen">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Customer Management</h1>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Customer Management
+          </h1>
           <p className="text-slate-600 mt-1 text-sm">
             View, manage and organize your customers
           </p>
@@ -68,18 +111,28 @@ const Customer = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
         {/* Controls */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 border-b bg-slate-50">
+          {/* Search */}
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
-              placeholder="Search customers"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search customers..."
               className="w-full pl-9 pr-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
+          {/* Filter */}
           <div className="flex gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 text-sm border rounded-xl hover:bg-slate-100">
-              <Filter size={16} /> Filter
-            </button>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="px-4 py-2 text-sm border rounded-xl"
+            >
+              <option value="">All</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
         </div>
 
@@ -97,58 +150,92 @@ const Customer = () => {
             </thead>
 
             <tbody className="divide-y">
-              {customerData.map((c, i) => (
-                <tr key={c.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3">{i + 1}</td>
-
-                  <td className="px-4 py-3 flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
-                      <UserCircle className="text-indigo-600" size={20} />
-                    </div>
-                    <div>
-                      <p className="font-medium text-slate-800">{c.name}</p>
-                      <span
-                        className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-0.5
-                          ${c.status === "Active"
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-red-100 text-red-700"}`}
-                      >
-                        {c.status}
-                      </span>
-                    </div>
-                  </td>
-
-                  <td className="px-4 py-3 text-slate-600">
-                    <Mail size={14} className="inline mr-2" />
-                    {c.email}
-                  </td>
-
-                  <td className="px-4 py-3 text-slate-600">
-                    <Calendar size={14} className="inline mr-2" />
-                    {c.joined}
-                  </td>
-
-                  <td className="px-4 py-3">
-                    <div className="flex justify-center gap-3">
-                      <Eye
-                        size={16}
-                        className="text-slate-600 cursor-pointer hover:text-indigo-600 transition"
-                      />
-                      <Edit2
-                        size={16}
-                        className="text-indigo-600 cursor-pointer hover:scale-105 transition"
-                      />
-                      <Trash2
-                        size={16}
-                        className="text-red-600 cursor-pointer hover:scale-105 transition"
-                      />
-                    </div>
-
+              {loading ? (
+                <tr>
+                  <td colSpan="5" className="text-center py-6">
+                    Loading...
                   </td>
                 </tr>
-              ))}
+              ) : customerData.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center py-6 text-slate-500">
+                    No customers found
+                  </td>
+                </tr>
+              ) : (
+                customerData.map((c, i) => (
+                  <tr key={c._id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3">{(page - 1) * limit + i + 1}</td>
+
+                    <td className="px-4 py-3 flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <UserCircle className="text-indigo-600" size={20} />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-800">{c.name}</p>
+                        <span
+                          className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-0.5 ${
+                            c.status === "Active"
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {c.status}
+                        </span>
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3 text-slate-600">
+                      <Mail size={14} className="inline mr-2" />
+                      {c.email}
+                    </td>
+
+                    <td className="px-4 py-3 text-slate-600">
+                      <Calendar size={14} className="inline mr-2" />
+                      {c.joined}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex justify-center gap-3">
+                        <Eye className="cursor-pointer" size={16} />
+                        <Edit2
+                          className="cursor-pointer text-indigo-600"
+                          size={16}
+                        />
+                        <Trash2
+                          className="cursor-pointer text-red-600"
+                          size={16}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex justify-end gap-2 p-4">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          <span className="px-3 py-1 text-sm">
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
