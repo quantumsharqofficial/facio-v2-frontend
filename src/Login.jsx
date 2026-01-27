@@ -12,13 +12,14 @@ const Login = () => {
     const emailInputRef = useRef(null);
     const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");
-
+    const navigate = useNavigate();
+    console.log("test");
     const handleToken = async () => {
         try {
-            const response = await AxiosInstance.post("auth/refresh-token", {
+
+            const response = await AxiosInstance.post("/auth/refresh-token", {
                 refreshToken,
             });
-            console.log(response?.status);
             if (response?.status === 200) {
                 navigate("/dashboard");
             }
@@ -27,17 +28,16 @@ const Login = () => {
         }
     }
 
-
-
     useEffect(() => {
-
-        handleToken();
+        if (refreshToken && user) {
+            handleToken();
+        }
         if (emailInputRef.current) {
             emailInputRef.current.focus();
         }
     }, []);
 
-    const navigate = useNavigate();
+    console.log("test 1");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,7 +63,7 @@ const Login = () => {
             console.error("Login failed:", error);
         }
     };
-
+    console.log("test 2");
     return (
 
         <div className="min-h-screen w-full flex relative font-sans">

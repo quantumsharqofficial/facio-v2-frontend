@@ -4,7 +4,8 @@ import Master from "./Pages/Master/Master";
 import Sidebar from "./layouts/Sidebar";
 import Navbar from "./layouts/Navbar";
 import AddCompany from "./component/AddCompany";
-import Dashboard from "./Pages/Master/Dashboard";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import Customer from "./Pages/Master/Customer";
 
 function AppLayout() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function AppLayout() {
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/master" element={<Master />} />
+            <Route path="/customer" element={<Customer />} />
             <Route path="/add-company" element={<AddCompany />} />
 
           </Routes>

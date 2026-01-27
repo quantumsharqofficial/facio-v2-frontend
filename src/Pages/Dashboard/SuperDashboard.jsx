@@ -37,7 +37,7 @@ const yearlyData = [
 
 
 
-const Dashboard = () => {
+const SuperDashboard = () => {
     const [timeRange, setTimeRange] = useState("monthly");
     const data = timeRange === "monthly" ? monthlyData : yearlyData;
 
@@ -160,4 +160,4 @@ const StatCard = ({ title, value, icon }) => {
     );
 };
 
-export default Dashboard;
+export default SuperDashboard;

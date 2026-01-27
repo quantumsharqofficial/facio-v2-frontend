@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Search,
   Filter,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Edit2, Trash2, Eye } from "lucide-react";
+import AxiosInstance from "../../utilits/axiosInstance";
 
 
 
@@ -23,7 +24,27 @@ const Customer = () => {
   ]);
 
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  const fetchCustomer = async () => {
+    try {
+      const token = localStorage.getItem("token"); // or sessionStorage
+
+      const response = await AxiosInstance.get("/companies", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response?.data);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchCustomer()
+  }, [])
   return (
     <div className="ml-64 px-6 py-8 min-h-screen">
       {/* Header */}
