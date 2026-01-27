@@ -41,7 +41,7 @@ const Sidebar = () => {
   const linksByRole = {
     SUPER_ADMIN: [
       { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Customer", path: "/master", icon: Users },
+      { name: "Customer", path: "/customer  ", icon: Users },
       { name: "Facio", path: "/facio", icon: Smartphone },
     ],
     COMPANY_ADMIN: [

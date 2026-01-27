@@ -15,13 +15,8 @@ import AxiosInstance from "../../utilits/axiosInstance";
 
 
 const Customer = () => {
-  const [customerData] = useState([
-    { id: 1, name: "Arun Kumar", email: "arun.k@example.com", status: "Active", joined: "Jan 12, 2024" },
-    { id: 2, name: "Siva Prakash", email: "siva.p@example.com", status: "Active", joined: "Jan 15, 2024" },
-    { id: 3, name: "Ramesh", email: "ramesh@example.com", status: "Inactive", joined: "Feb 02, 2024" },
-    { id: 4, name: "Priya", email: "priya@example.com", status: "Active", joined: "Feb 10, 2024" },
-    { id: 5, name: "Anita Raj", email: "anita.r@example.com", status: "Active", joined: "Feb 18, 2024" },
-  ]);
+
+  const [customerData, setCustomerData] = useState([]);
 
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -35,9 +30,11 @@ const Customer = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+      console.log(response?.data);
+      setCustomerData(response?.data?.result?.data);
     } catch (error) {
       console.log(error.response?.data);
+      setCustomerData([]);
     }
   };
 
