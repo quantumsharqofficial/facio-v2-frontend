@@ -51,6 +51,9 @@ const Login = () => {
       console.log("Login success:", response);
 
       const { accessToken, refreshToken, user } = response?.data?.result;
+      console.log("accessToken", accessToken);
+      console.log("refreshToken", refreshToken);
+      console.log("user", user);
 
 
 
@@ -58,10 +61,11 @@ const Login = () => {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Assuming the dashboard route is /master based on previous context
-      // Adjust if it is /dashboard
-      // navigate("/dashboard");
-      navigate("/customer");
+      if (user.role === "COMPANY_ADMIN") {
+        navigate("/employee");
+      } else if (user.role === "SUPER_ADMIN") {
+        navigate("/customer");
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }

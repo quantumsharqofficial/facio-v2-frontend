@@ -15,6 +15,9 @@ import Expenses from "./Pages/Customer/Expenses";
 import AddEmployee from "./component/Employee/AddEmployee";
 import ViewEmployee from "./component/Employee/ViewEmployee";
 import EditEmployee from "./component/Employee/EditEmployee";
+import AddUser from "./component/Customer/AddUser";
+import RoleRoute from "./component/RoleRoute";
+
 
 function AppLayout() {
   const location = useLocation();
@@ -37,20 +40,79 @@ function AppLayout() {
         {/* Content */}
         <div className="w-full min-h-screen overflow-y-auto">
           <Routes>
+            {/* gentral Routes */}
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/master" element={<Master />} />
-            <Route path="/customer" element={<Customer />} />
-            <Route path="/add-company" element={<AddCompany />} />
-            <Route path="/view-company/:id" element={<ViewCompany />} />
-            <Route path="/edit-company/:id" element={<EditCompany />} />
-            <Route path="/employee" element={<Employee />} />
-            <Route path="/add-employee" element={<AddEmployee />} />
-            <Route path="/view-employee/:id" element={<ViewEmployee />} />
-            <Route path="/edit-employee/:id" element={<EditEmployee />} />
-            <Route path="/attendance" element={<Attendance />} />
-            <Route path="/leave" element={<Leave />} />
-            <Route path="/expense" element={<Expenses />} />
+
+            {/* protected Routes - Super Admin */}
+            <Route path="/master" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <Master />
+              </RoleRoute>
+            } />
+            <Route path="/customer" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <Customer />
+              </RoleRoute>}
+            />
+            <Route path="/add-company" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <AddCompany />
+              </RoleRoute>
+            } />
+            <Route path="/view-company/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <ViewCompany />
+              </RoleRoute>
+            } />
+            <Route path="/edit-company/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <EditCompany />
+              </RoleRoute>
+            } />
+            <Route path="/add-user/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <AddUser />
+              </RoleRoute>
+            } />
+
+
+            {/* protected Routes - Company Admin, HR, Manager */}
+            <Route path="/employee" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <Employee />
+              </RoleRoute>
+            } />
+            <Route path="/add-employee" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <AddEmployee />
+              </RoleRoute>
+            } />
+            <Route path="/view-employee/:id" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <ViewEmployee />
+              </RoleRoute>
+            } />
+            <Route path="/edit-employee/:id" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <EditEmployee />
+              </RoleRoute>
+            } />
+            <Route path="/attendance" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <Attendance />
+              </RoleRoute>
+            } />
+            <Route path="/leave" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <Leave />
+              </RoleRoute>
+            } />
+            <Route path="/expense" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <Expenses />
+              </RoleRoute>
+            } />
           </Routes>
         </div>
       </div>
