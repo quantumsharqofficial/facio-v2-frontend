@@ -162,7 +162,7 @@ const Customer = () => {
                 <th className="px-4 py-3 text-left">Customer</th>
                 <th className="px-4 py-3 text-left">Email</th>
                 <th className="px-4 py-3 text-left">Joined</th>
-                <th className="px-4 py-3 text-left">Add User</th>
+                <th className="px-4 py-3 text-left">User Details</th>
                 <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -213,10 +213,10 @@ const Customer = () => {
                     </td>
                     <td className="px-4 py-3 ">
                       <button
-                        onClick={() => navigate(`/add-user/${c._id}`)}
+                        onClick={() => navigate(`/user/${c._id}`)}
                         className="px-3 py-1 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg"
                       >
-                        + Add User
+                        Users
                       </button>
                     </td>
 

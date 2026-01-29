@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, matchPath } from "react-router-dom";
+import { Routes, Route, useLocation, matchPath, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Master from "./Pages/Master/Master";
 import Sidebar from "./layouts/Sidebar";
@@ -8,18 +8,22 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import Customer from "./Pages/Master/Customer";
 import ViewCompany from "./component/Customer/ViewCompany";
 import EditCompany from "./component/Customer/EditCompany";
-import Employee from "./Pages/Customer/Employee";
-import Attendance from "./Pages/Customer/Attendance";
-import Leave from "./Pages/Customer/Leave";
-import Expenses from "./Pages/Customer/Expenses";
+import Employee from "./Pages/Companys/Employee";
+import Attendance from "./Pages/Companys/Attendance";
+import Leave from "./Pages/Companys/Leave";
+import Expenses from "./Pages/Companys/Expenses";
 import AddEmployee from "./component/Employee/AddEmployee";
 import ViewEmployee from "./component/Employee/ViewEmployee";
 import EditEmployee from "./component/Employee/EditEmployee";
 import AddUser from "./component/Customer/AddUser";
 import RoleRoute from "./component/RoleRoute";
+import User from "./component/Customer/User";
+import { ArrowLeft } from "lucide-react";
 
 
 function AppLayout() {
+  const navigate = useNavigate();
+
   const location = useLocation();
 
   const hiddenRoutePatterns = ["/"];
@@ -39,6 +43,18 @@ function AppLayout() {
 
         {/* Content */}
         <div className="w-full min-h-screen overflow-y-auto">
+          <div className="w-full p-4 relative">
+            <button
+              onClick={() => navigate(-1)}
+              className="absolute top-4 right-4 z-50 inline-flex items-center gap-2 
+               bg-slate-800 text-white px-4 py-2 rounded-lg 
+               hover:bg-slate-900 shadow-lg"
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+          </div>
+
           <Routes>
             {/* gentral Routes */}
             <Route path="/" element={<Login />} />
@@ -68,6 +84,11 @@ function AppLayout() {
             <Route path="/edit-company/:id" element={
               <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
                 <EditCompany />
+              </RoleRoute>
+            } />
+            <Route path="/user/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <User />
               </RoleRoute>
             } />
             <Route path="/add-user/:id" element={

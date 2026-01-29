@@ -4,8 +4,6 @@ import { getUser } from "../utilits/auth";
 
 const RoleRoute = ({ allowedRoles, children }) => {
     const user = getUser();
-    console.log(user,"Role based routing User");
-    
     if (!user) {
         return <Navigate to="/" replace />;
     }

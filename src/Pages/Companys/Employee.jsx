@@ -11,6 +11,8 @@ import {
   Eye,
   Briefcase,
   Phone,
+  CalendarOff,
+  Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -134,12 +136,53 @@ const Employee = () => {
             <thead className="bg-slate-50 text-slate-600">
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
-                <th className="px-4 py-3 text-left">Employee</th>
-                <th className="px-4 py-3 text-left">Role / Dept</th>
-                <th className="px-4 py-3 text-left">Phone</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <UserCircle size={14} /> Employee
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <Briefcase size={14} /> Role / Dept
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <Phone size={14} /> Phone
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <Clock size={14} /> Attendance
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <Calendar size={14} /> Leave
+
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-left">
+                  <div className="flex items-center gap-1">
+                    <Briefcase size={14} /> Payslip
+                  </div>
+                </th>
+
+                <th className="px-4 py-3 text-center">
+                  <div className="flex justify-center items-center gap-1">
+                    <Eye size={14} /> Actions
+                  </div>
+                </th>
               </tr>
             </thead>
+
+
 
             <tbody className="divide-y">
               {filteredData.length === 0 ? (
@@ -173,6 +216,38 @@ const Employee = () => {
                       <div className="text-xs text-slate-500 flex items-center gap-1">
                         <Phone size={12} /> {employee.phone}
                       </div>
+                    </td>
+
+                    {/* Attendance */}
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => navigate(`/attendance/${employee._id}`)}
+                        className="flex items-center gap-1 px-3 py-1 text-xs rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200"
+                      >
+                        <Clock size={14} /> View
+                      </button>
+                    </td>
+
+
+                    {/* Leave */}
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => navigate(`/leave/${employee._id}`)}
+                        className="flex items-center gap-1 px-3 py-1 text-xs rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200"
+                      >
+                        <Calendar size={14} /> View
+                      </button>
+                    </td>
+
+
+                    {/* Payslip */}
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => navigate(`/payslip/${employee._id}`)}
+                        className="flex items-center gap-1 px-3 py-1 text-xs rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+                      >
+                        <Briefcase size={14} /> View
+                      </button>
                     </td>
 
                     <td className="px-4 py-3">
