@@ -42,6 +42,22 @@ const Customer = () => {
 
   const debouncedSearch = useDebounce(search);
 
+  const formatDateTime = (dateString) => {
+    if (!dateString) return "-";
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+
   /* ------------------ Fetch API ------------------ */
   const fetchCustomer = async (isMounted) => {
     try {
@@ -175,11 +191,10 @@ const Customer = () => {
                       <div>
                         <p className="font-medium text-slate-800">{c.name}</p>
                         <span
-                          className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-0.5 ${
-                            c.status === "Active"
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
+                          className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-0.5 ${c.status === "Active"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-red-100 text-red-700"
+                            }`}
                         >
                           {c.status}
                         </span>
@@ -193,15 +208,19 @@ const Customer = () => {
 
                     <td className="px-4 py-3 text-slate-600">
                       <Calendar size={14} className="inline mr-2" />
-                      {c.joined}
+                      {formatDateTime(c.createdAt)}
                     </td>
 
                     <td className="px-4 py-3">
                       <div className="flex justify-center gap-3">
-                        <Eye className="cursor-pointer" size={16} />
+                        <Eye
+                          className="cursor-pointer"
+                          size={16}
+                          onClick={() => navigate(`/view-company/${c._id}`)} />
                         <Edit2
                           className="cursor-pointer text-indigo-600"
                           size={16}
+                          onClick={() => navigate(`/edit-company/${c._id}`)}
                         />
                         <Trash2
                           className="cursor-pointer text-red-600"

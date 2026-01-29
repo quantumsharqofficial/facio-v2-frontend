@@ -11,6 +11,9 @@ import {
   Menu,
   X,
   Smartphone,
+  Clock,
+  CalendarCheck,
+  Wallet,
 } from "lucide-react";
 import logo from "../assets/logo.png";
 
@@ -40,33 +43,35 @@ const Sidebar = () => {
 
   const linksByRole = {
     SUPER_ADMIN: [
-      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Customer", path: "/customer  ", icon: Users },
+      // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Customer", path: "/customer", icon: Users },
       { name: "Facio", path: "/facio", icon: Smartphone },
     ],
     COMPANY_ADMIN: [
-      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Patients", path: "/patients", icon: UserCircle },
-      { name: "Appointments", path: "/appointments", icon: CalendarClock },
-      { name: "Inventory", path: "/inventory", icon: Package },
-      { name: "Reports", path: "/admin/reports", icon: BarChart2 },
+      // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Employee", path: "/employee", icon: Users },
+      { name: "Attendance", path: "/attendance", icon: Clock },
+      { name: "Leave", path: "/leave", icon: CalendarCheck },
+      { name: "Expenses", path: "/expense", icon: Wallet },
     ], HR: [
-      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Patients", path: "/patients", icon: UserCircle },
-      { name: "Appointments", path: "/appointments", icon: CalendarClock },
-      { name: "Inventory", path: "/inventory", icon: Package },
-      { name: "Reports", path: "/admin/reports", icon: BarChart2 },
+      // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Employee", path: "/employee", icon: Users },
+      { name: "Attendance", path: "/attendance", icon: Clock },
+      { name: "Leave", path: "/leave", icon: CalendarCheck },
+      { name: "Expenses", path: "/expense", icon: Wallet },
     ], MANAGER: [
-      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "Patients", path: "/patients", icon: UserCircle },
-      { name: "Appointments", path: "/appointments", icon: CalendarClock },
-      { name: "Inventory", path: "/inventory", icon: Package },
-      { name: "Reports", path: "/admin/reports", icon: BarChart2 },
-    ],
+     // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Employee", path: "/employee", icon: Users },
+      { name: "Attendance", path: "/attendance", icon: Clock },
+      { name: "Leave", path: "/leave", icon: CalendarCheck },
+      { name: "Expenses", path: "/expense", icon: Wallet },
+   ],
     EMPLOYEE: [
-      { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-      { name: "My Profile", path: "/profile", icon: UserCircle },
-      { name: "History", path: "/history", icon: CalendarClock },
+    // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+      { name: "Employee", path: "/employee", icon: Users },
+      { name: "Attendance", path: "/attendance", icon: Clock },
+      { name: "Leave", path: "/leave", icon: CalendarCheck },
+      { name: "Expenses", path: "/expense", icon: Wallet },
     ],
   };
 
@@ -112,7 +117,7 @@ const Sidebar = () => {
           {sidebarLinks.map((link) => {
             const isActive =
               location.pathname === link.path ||
-              location.pathname.startsWith(link.path + "/");
+              location.pathname.startsWith(link.path + "/customer");
 
             return (
               <li key={link.path} className="w-full">

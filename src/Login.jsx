@@ -31,7 +31,8 @@ const Login = () => {
     const user = localStorage.getItem("user");
     const refreshToken = localStorage.getItem("refreshToken");
     if (token && user && refreshToken) {
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      navigate("/customer");
     }
 
     emailInputRef.current?.focus();
@@ -49,13 +50,9 @@ const Login = () => {
 
       console.log("Login success:", response);
 
-<<<<<<< HEAD
-            const { accessToken, refreshToken, user } = response?.data?.result;
+      const { accessToken, refreshToken, user } = response?.data?.result;
 
 
-=======
-      const { accessToken, refreshToken, user } = response.data.result;
->>>>>>> 5b3481d20257359332ad6d104415762f5c5f224b
 
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -63,7 +60,8 @@ const Login = () => {
 
       // Assuming the dashboard route is /master based on previous context
       // Adjust if it is /dashboard
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      navigate("/customer");
     } catch (error) {
       console.error("Login failed:", error);
     }
