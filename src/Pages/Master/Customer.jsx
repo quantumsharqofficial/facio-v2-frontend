@@ -9,6 +9,7 @@ import {
   Edit2,
   Trash2,
   Eye,
+  Phone,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../../utilits/axiosInstance";
@@ -102,6 +103,9 @@ const Customer = () => {
     };
   }, [page, debouncedSearch, status]);
 
+
+
+
   /* ------------------ UI ------------------ */
   return (
     <div className="ml-64 px-6 py-8 min-h-screen">
@@ -160,10 +164,10 @@ const Customer = () => {
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
-                <th className="px-4 py-3 text-left">Email</th>
+                <th className="px-4 py-3 text-left">Phone</th>
                 <th className="px-4 py-3 text-left">Joined</th>
                 <th className="px-4 py-3 text-left">User Details</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+                <th className="px-4 py-3 text-center">View</th>
               </tr>
             </thead>
 
@@ -203,8 +207,8 @@ const Customer = () => {
                     </td>
 
                     <td className="px-4 py-3 text-slate-600">
-                      <Mail size={14} className="inline mr-2" />
-                      {c.email}
+                      <Phone size={14} className="inline mr-2" />
+                      {c.phone}
                     </td>
 
                     <td className="px-4 py-3 text-slate-600">
@@ -224,17 +228,13 @@ const Customer = () => {
                       <div className="flex justify-center gap-3">
                         <Eye
                           className="cursor-pointer"
-                          size={16}
+                          size={20}
                           onClick={() => navigate(`/view-company/${c._id}`)} />
-                        <Edit2
+                        {/* <Edit2
                           className="cursor-pointer text-indigo-600"
                           size={16}
                           onClick={() => navigate(`/edit-company/${c._id}`)}
-                        />
-                        <Trash2
-                          className="cursor-pointer text-red-600"
-                          size={16}
-                        />
+                        /> */}
                       </div>
                     </td>
                   </tr>

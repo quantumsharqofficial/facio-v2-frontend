@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AxiosInstance from "../../utilits/axiosInstance";
+import AxiosInstance from "../../../utilits/axiosInstance";
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const AddUser = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "SUPER_ADMIN",
+    role: "",
   });
 
 
@@ -114,21 +114,21 @@ const AddUser = () => {
           </div>
 
           {/* Role */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Role
-            </label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
-            >
-              <option value="COMPANY_ADMIN">Company Admin</option>
-              <option value="MANAGER">Manager</option>
-              <option value="HR">HR</option>
-            </select>
-          </div>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+          >
+            <option value="" disabled>
+              Select Role
+            </option>
+            <option value="COMPANY_ADMIN">Company Admin</option>
+            <option value="MANAGER">Manager</option>
+            <option value="HR">HR</option>
+          </select>
+
 
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-6">

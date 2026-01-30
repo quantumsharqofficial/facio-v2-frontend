@@ -13,26 +13,17 @@ const Login = () => {
   const user = localStorage.getItem("user");
   const navigate = useNavigate();
   console.log("test");
-  //   const handleToken = async () => {
-  //     try {
-  //       const response = await AxiosInstance.post("/auth/refresh-token", {
-  //         refreshToken,
-  //       });
-  //       if (response?.data.success === true) {
-  //         navigate("/dashboard");
-  //       }
-  //     } catch (error) {
-  //       console.error("Login failed:", error);
-  //     }
-  //   };
-
+ 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     const refreshToken = localStorage.getItem("refreshToken");
     if (token && user && refreshToken) {
-      // navigate("/dashboard");
-      navigate("/customer");
+      if (user.role === "COMPANY_ADMIN") {
+        navigate("/employee");
+      } else if (user.role === "SUPER_ADMIN") {
+        navigate("/customer");
+      }
     }
 
     emailInputRef.current?.focus();

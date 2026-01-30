@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import AxiosInstance from "../../utilits/axiosInstance";
+import AxiosInstance from "../../../utilits/axiosInstance";
 
 function AddCompany() {
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
-        phone: "",
+      phone: "",
         address: "",
         city: "",
         state: "",
@@ -110,7 +109,7 @@ function AddCompany() {
                 </h2>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <input
                         type="text"
                         name="name"
@@ -121,16 +120,7 @@ function AddCompany() {
                         required
                     />
 
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Email"
-                        className="w-full px-4 py-2.5 border rounded-lg"
-                        required
-                    />
-
+               
                     <input
                         type="tel"
                         name="phone"

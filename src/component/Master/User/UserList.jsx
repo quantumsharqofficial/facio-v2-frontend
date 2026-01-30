@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, Edit2, Trash2, Eye, Mail, Lock, UserCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import AxiosInstance from "../../../utilits/axiosInstance";
 
-const User = () => {
+const UserList = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const [users, setUsers] = useState([])
 
-    // demo data (later API replace pannalaam)
-    const [users] = useState([
-        {
-            _id: "1",
-            email: "admin@test.com",
-            password: "********",
-            role: "Admin",
-        },
-        {
-            _id: "2",
-            email: "user@test.com",
-            password: "********",
-            role: "User",
-        },
-    ]);
+    const fetchUsers = async () => {
+        try {
+            const res = await AxiosInstance.get(`/companies/${id}/users`);
+            console.log(res?.data?.result);
+            setUsers(res?.data?.result);
+        }
+        catch (error) {
+            console.error(error.response?.data);
+            setUsers([])
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
+
+
 
     return (
         <div className="ml-64 px-6 py-8 min-h-screen">
@@ -47,14 +51,13 @@ const User = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
                 {/* Table */}
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
+                    <table className="w-full text-sm text-center">
                         <thead className="bg-slate-50 text-slate-600">
                             <tr>
-                                <th className="px-4 py-3 text-left">#</th>
-                                <th className="px-4 py-3 text-left">Email</th>
-                                <th className="px-4 py-3 text-left">Password</th>
-                                <th className="px-4 py-3 text-left">Role</th>
-                                <th className="px-4 py-3 text-center">Actions</th>
+                                <th className="px-4 py-3 ">#</th>
+                                <th className="px-4 py-3 ">Email</th>
+                                <th className="px-4 py-3 ">Role</th>
+                                <th className="px-4 py-3 ">Actions</th>
                             </tr>
                         </thead>
 
@@ -78,10 +81,7 @@ const User = () => {
                                             {u.email}
                                         </td>
 
-                                        <td className="px-4 py-3 text-slate-600">
-                                            <Lock size={14} className="inline mr-2" />
-                                            {u.password}
-                                        </td>
+
 
                                         <td className="px-4 py-3">
                                             <span className="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">
@@ -116,4 +116,4 @@ const User = () => {
     );
 };
 
-export default User;
+export default UserList;

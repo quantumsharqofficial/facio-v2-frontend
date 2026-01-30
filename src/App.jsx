@@ -1,13 +1,12 @@
 import { Routes, Route, useLocation, matchPath, useNavigate } from "react-router-dom";
 import Login from "./Login";
-import Master from "./Pages/Master/Master";
+
 import Sidebar from "./layouts/Sidebar";
 import Navbar from "./layouts/Navbar";
-import AddCompany from "./component/Customer/AddCompany";
+
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Customer from "./Pages/Master/Customer";
-import ViewCompany from "./component/Customer/ViewCompany";
-import EditCompany from "./component/Customer/EditCompany";
+
 import Employee from "./Pages/Companys/Employee";
 import Attendance from "./Pages/Companys/Attendance";
 import Leave from "./Pages/Companys/Leave";
@@ -15,11 +14,13 @@ import Expenses from "./Pages/Companys/Expenses";
 import AddEmployee from "./component/Employee/AddEmployee";
 import ViewEmployee from "./component/Employee/ViewEmployee";
 import EditEmployee from "./component/Employee/EditEmployee";
-import AddUser from "./component/Customer/AddUser";
 import RoleRoute from "./component/RoleRoute";
-import User from "./component/Customer/User";
-import { ArrowLeft } from "lucide-react";
-
+import { ArrowLeft, User } from "lucide-react";
+import AddCompany from "./component/Master/Customer/AddCompany";
+import ViewCompany from "./component/Master/Customer/ViewCompany";
+import EditCompany from "./component/Master/Customer/EditCompany";
+import AddUser from "./component/Master/User/AddUser";
+import UserList from "./component/Master/User/UserList";
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -37,35 +38,29 @@ function AppLayout() {
       {/* Navbar */}
       <div className="flex">
         {/* Sidebar */}
-        <div className="fixed left-0 h-[calc(100%)] shadow-md w -64">
+        <div className="fixed left-0 h-full shadow-md w-64">
           <Sidebar />
         </div>
 
         {/* Content */}
         <div className="w-full min-h-screen overflow-y-auto">
-          <div className="w-full p-4 relative">
-            <button
-              onClick={() => navigate(-1)}
-              className="absolute top-4 right-4 z-50 inline-flex items-center gap-2 
+          {!isHiddenRoute && (
+            <div className="w-full p-4 relative">
+              <button
+                onClick={() => navigate(-1)}
+                className="absolute top-4 right-4 z-50 inline-flex items-center gap-2 
                bg-slate-800 text-white px-4 py-2 rounded-lg 
                hover:bg-slate-900 shadow-lg"
-            >
-              <ArrowLeft size={16} />
-              Back
-            </button>
-          </div>
-
+              >
+                <ArrowLeft size={16} />
+                Back
+              </button>
+            </div>
+          )}
           <Routes>
             {/* gentral Routes */}
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-
-            {/* protected Routes - Super Admin */}
-            <Route path="/master" element={
-              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
-                <Master />
-              </RoleRoute>
-            } />
             <Route path="/customer" element={
               <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
                 <Customer />
@@ -88,7 +83,7 @@ function AppLayout() {
             } />
             <Route path="/user/:id" element={
               <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
-                <User />
+                <UserList />
               </RoleRoute>
             } />
             <Route path="/add-user/:id" element={
