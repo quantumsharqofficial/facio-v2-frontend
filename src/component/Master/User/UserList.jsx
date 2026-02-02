@@ -57,7 +57,7 @@ const UserList = () => {
                                 <th className="px-4 py-3 ">#</th>
                                 <th className="px-4 py-3 ">Email</th>
                                 <th className="px-4 py-3 ">Role</th>
-                                <th className="px-4 py-3 ">Actions</th>
+                                <th className="px-4 py-3 ">View</th>
                             </tr>
                         </thead>
 
@@ -92,17 +92,9 @@ const UserList = () => {
                                         <td className="px-4 py-3">
                                             <div className="flex justify-center gap-3">
                                                 <Eye
-                                                    size={16}
-                                                    className="cursor-pointer text-slate-600"
-                                                />
-                                                <Edit2
-                                                    size={16}
-                                                    className="cursor-pointer text-indigo-600"
-                                                />
-                                                <Trash2
-                                                    size={16}
-                                                    className="cursor-pointer text-red-600"
-                                                />
+                                                    className="cursor-pointer"
+                                                    size={20}
+                                                    onClick={() => navigate(`/view-user/${u._id}`)} />
                                             </div>
                                         </td>
                                     </tr>

@@ -21,6 +21,8 @@ import ViewCompany from "./component/Master/Customer/ViewCompany";
 import EditCompany from "./component/Master/Customer/EditCompany";
 import AddUser from "./component/Master/User/AddUser";
 import UserList from "./component/Master/User/UserList";
+import ViewUser from "./component/Master/User/ViewUser";
+import EditUser from "./component/Master/User/EditUser";
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -91,6 +93,17 @@ function AppLayout() {
                 <AddUser />
               </RoleRoute>
             } />
+            <Route path="/view-user/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <ViewUser />
+              </RoleRoute>
+            } />
+            <Route path="/edit-user/:id" element={
+              <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                <EditUser />
+              </RoleRoute>
+            } />
+
 
 
             {/* protected Routes - Company Admin, HR, Manager */}

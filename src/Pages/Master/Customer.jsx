@@ -229,7 +229,7 @@ const Customer = () => {
                         <Eye
                           className="cursor-pointer"
                           size={20}
-                          onClick={() => navigate(`/view-company/${c._id}`)} />
+                          onClick={() => navigate(`/view-user/${c._id}`)} />
                         {/* <Edit2
                           className="cursor-pointer text-indigo-600"
                           size={16}
