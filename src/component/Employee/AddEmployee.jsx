@@ -461,7 +461,7 @@ const AddEmployee = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center gap-2 mb-6 overflow-x-auto pb-2">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {tabs.map((tab, i) => {
             const Icon = tab.icon;
             const isCompleted = completedTabs.includes(i);

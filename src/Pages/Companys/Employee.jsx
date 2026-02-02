@@ -173,7 +173,19 @@ const Employee = () => {
                     {/* Name & Email */}
                     <td className="px-4 py-3 flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <UserCircle className="text-indigo-600" size={20} />
+                        {console.log(employee?.photo)}
+                        {employee.photo ? (
+                          <img
+                            src={employee?.photo}
+                            alt="Profile"
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <UserCircle className="text-indigo-600" size={20} />
+                        )}
                       </div>
                       <div>
                         <p className="font-medium text-slate-800">
