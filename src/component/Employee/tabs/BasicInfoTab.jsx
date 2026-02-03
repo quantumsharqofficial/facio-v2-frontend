@@ -115,18 +115,32 @@ const BasicInfoTab = ({ data, onChange }) => {
               className={inputClass}
             />
           </div>
-          <div >
+          <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
               <Calendar size={14} className="inline mr-1" /> Joining Date
             </label>
             <input
               type="date"
               name="joiningDate"
-              value={data.joiningDate}
+              value={data.joiningDate || ""}
               onChange={onChange}
               className={inputClass}
             />
           </div>
+          {data.exitDate !== undefined && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                <Calendar size={14} className="inline mr-1" /> Exit Date
+              </label>
+              <input
+                type="date"
+                name="exitDate"
+                value={data.exitDate || ""}
+                onChange={onChange}
+                className={inputClass}
+              />
+            </div>
+          )}
 
           {/* Status */}
           <div>
@@ -147,35 +161,37 @@ const BasicInfoTab = ({ data, onChange }) => {
         </div>
       </div>
 
-      <div className="border-t pt-4">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            name="createLogin"
-            checked={data.createLogin}
-            onChange={onChange}
-            className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
-          />
-          <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
-            <Key size={14} /> Create login credentials
-          </span>
-        </label>
-        {data.createLogin && (
-          <div className="mt-3">
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Initial Password
-            </label>
+      {data.createLogin !== undefined && (
+        <div className="border-t pt-4">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="password"
-              name="password"
-              value={data.password}
+              type="checkbox"
+              name="createLogin"
+              checked={data.createLogin || false}
               onChange={onChange}
-              placeholder="Set password for employee login"
-              className={inputClass}
+              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
             />
-          </div>
-        )}
-      </div>
+            <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
+              <Key size={14} /> Create login credentials
+            </span>
+          </label>
+          {data.createLogin && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Initial Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={data.password}
+                onChange={onChange}
+                placeholder="Set password for employee login"
+                className={inputClass}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -81,19 +81,27 @@ const AddEmployee = () => {
   // Work Info State
   const [work, setWork] = useState({
     employmentType: "",
-    shift: "",
-    workingDays: [],
     sourceOfHire: "",
-    status: "ACTIVE",
-    workPhone: "",
-    extension: "",
     location: "",
+    department: "",
+    designation: "",
+    customWorkingDays: {
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+      saturday: false,
+      sunday: false,
+    },
   });
 
   // Contact State
   const [contact, setContact] = useState({
     personalMobile: "",
     personalEmail: "",
+    workPhone: "",
+    extension: "",
     presentAddress: {
       line1: "",
       line2: "",
@@ -206,12 +214,13 @@ const AddEmployee = () => {
     setWork((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleWorkingDayToggle = (day) => {
+  const handleWorkingDayToggle = (dayKey) => {
     setWork((prev) => ({
       ...prev,
-      workingDays: prev.workingDays.includes(day)
-        ? prev.workingDays.filter((d) => d !== day)
-        : [...prev.workingDays, day],
+      customWorkingDays: {
+        ...prev.customWorkingDays,
+        [dayKey]: !prev.customWorkingDays?.[dayKey],
+      },
     }));
   };
 

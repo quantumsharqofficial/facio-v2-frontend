@@ -31,6 +31,32 @@ const ContactTab = ({ data, onChange, onAddressChange, onSameAsPresent }) => {
             className={inputClass}
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            Work Phone
+          </label>
+          <input
+            type="tel"
+            name="workPhone"
+            value={data.workPhone}
+            onChange={onChange}
+            placeholder="+91 ..."
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            Extension
+          </label>
+          <input
+            type="text"
+            name="extension"
+            value={data.extension}
+            onChange={onChange}
+            placeholder="e.g. 101"
+            className={inputClass}
+          />
+        </div>
       </div>
 
       <div className="border-t pt-4">

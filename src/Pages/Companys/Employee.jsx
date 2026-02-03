@@ -247,9 +247,12 @@ const Employee = () => {
                     {/* Actions */}
                     <td className="px-4 py-3">
                       <div className="flex justify-center gap-3">
-                        <Eye className="cursor-pointer text-slate-500 hover:text-indigo-600" size={16} />
-                        <Edit2 className="cursor-pointer text-indigo-600 hover:text-indigo-800" size={16} />
-                        <Trash2 className="cursor-pointer text-red-600 hover:text-red-800" size={16} />
+                        <Eye
+                          className="cursor-pointer text-slate-500 hover:text-indigo-600"
+                          size={20}
+                          onClick={() => navigate(`/view-employee/${employee._id}`)}
+                          title="View Employee"
+                        />
                       </div>
                     </td>
                   </tr>
