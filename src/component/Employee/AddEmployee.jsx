@@ -480,7 +480,7 @@ const AddEmployee = () => {
                 key={i}
                 onClick={() => !isDisabled && setActiveTab(i)}
                 disabled={isDisabled}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${activeTab === i
+                className={`flex items-center gap-2 px-4 py-2 text-nowrap rounded-xl text-sm font-medium transition-all ${activeTab === i
                   ? "bg-indigo-600 text-white"
                   : isCompleted
                     ? "bg-green-100 text-green-700 border border-green-300"

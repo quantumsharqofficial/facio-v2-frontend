@@ -24,7 +24,7 @@ function EditCompany() {
     const fetchCustomer = async () => {
         try {
             const res = await AxiosInstance.get(`/companies/${id}`);
-            console.log(res?.data?.result);
+            // console.log(res?.data?.result);
             setFormData(res?.data?.result);
         } catch (error) {
             console.error(error.response?.data);
@@ -89,13 +89,13 @@ function EditCompany() {
         }
 
         try {
-            console.log("Submitting FormData...");
+            // console.log("Submitting FormData...");
             const response = await AxiosInstance.post('/companies/', data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Company created successfully:", response.data);
+            // console.log("Company created successfully:", response.data);
             // Optional: Show success feedback or redirect
             alert("Company created successfully!");
         } catch (error) {
@@ -142,7 +142,7 @@ function EditCompany() {
                 }
             );
 
-            console.log("Company updated:", res.data);
+            // console.log("Company updated:", res.data);
             alert("Company updated successfully!");
         } catch (error) {
             console.error(error.response?.data);

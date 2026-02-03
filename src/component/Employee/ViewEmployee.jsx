@@ -384,7 +384,7 @@ const ViewEmployee = () => {
               <button
                 key={i}
                 onClick={() => setActiveTab(i)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${activeTab === i
+                className={`flex items-center gap-2 text-nowrap px-4 py-2 rounded-xl text-sm font-medium transition-all ${activeTab === i
                   ? "bg-indigo-600 text-white"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}

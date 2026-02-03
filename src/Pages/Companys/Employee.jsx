@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../../utilits/axiosInstance";
+import Card from "../../component/Cards/Card";
 
 const Employee = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Employee = () => {
   const fetchEmployees = async () => {
     try {
       const res = await AxiosInstance.get("/employees/");
-      console.log("employees", res?.data?.data);
+      console.log("employees", res);
       setEmployeeData(res?.data?.data || []);
     } catch (error) {
       console.error(error.response?.data);
@@ -54,6 +55,36 @@ const Employee = () => {
 
 
 
+  const countByGender = (arr) => {
+    const male = arr.filter(e => e.gender === "Male").length;
+    const female = arr.filter(e => e.gender === "Female").length;
+    const other = arr.filter(e => e.gender === "Other").length;
+    return { male, female, other };
+  };
+
+  // Total employees
+  const total = employeeData;
+  const totalGender = countByGender(total);
+
+  // Full Time
+  const fullTime = employeeData.filter(e => e.employeeType === "Full Time");
+  const fullTimeGender = countByGender(fullTime);
+
+  // Part Time
+  const partTime = employeeData.filter(e => e.employeeType === "PART_TIME");
+  const partTimeGender = countByGender(partTime);
+
+  // Contract
+  const contract = employeeData.filter(e => e.employeeType === "Contract");
+  const contractGender = countByGender(contract);
+
+  // Intern
+  const intern = employeeData.filter(e => e.employeeType === "Intern");
+  const internGender = countByGender(intern);
+
+
+
+
   return (
     <div className="ml-64 px-6 py-8 min-h-screen">
       {/* Header */}
@@ -76,6 +107,78 @@ const Employee = () => {
       </div>
 
       {/* Card */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+
+        {/* Total Employees */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Total Employees</p>
+          <h2 className="text-2xl font-bold text-slate-900 mt-1">
+            {total.length}
+          </h2>
+          <div className="flex gap-3 text-xs mt-2">
+            {totalGender.male > 0 && <span className="text-blue-600">M: {totalGender.male}</span>}
+            {totalGender.female > 0 && <span className="text-pink-600">F: {totalGender.female}</span>}
+            {totalGender.other > 0 && <span className="text-emerald-600">O: {totalGender.other}</span>}
+          </div>
+        </div>
+
+        {/* Full Time */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-sm text-indigo-600">Full Time</p>
+          <h2 className="text-2xl font-bold text-slate-900 mt-1">
+            {fullTime.length}
+          </h2>
+          <div className="flex gap-3 text-xs mt-2">
+            {fullTimeGender.male > 0 && <span className="text-blue-600">M: {fullTimeGender.male}</span>}
+            {fullTimeGender.female > 0 && <span className="text-pink-600">F: {fullTimeGender.female}</span>}
+            {fullTimeGender.other > 0 && <span className="text-emerald-600">O: {fullTimeGender.other}</span>}
+          </div>
+        </div>
+
+        {/* Part Time */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-sm text-blue-600">Part Time</p>
+          <h2 className="text-2xl font-bold text-slate-900 mt-1">
+            {partTime.length}
+          </h2>
+          <div className="flex gap-3 text-xs mt-2">
+            {partTimeGender.male > 0 && <span className="text-blue-600">M: {partTimeGender.male}</span>}
+            {partTimeGender.female > 0 && <span className="text-pink-600">F: {partTimeGender.female}</span>}
+            {partTimeGender.other > 0 && <span className="text-emerald-600">O: {partTimeGender.other}</span>}
+          </div>
+        </div>
+
+        {/* Contract */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-sm text-amber-600">Contract</p>
+          <h2 className="text-2xl font-bold text-slate-900 mt-1">
+            {contract.length}
+          </h2>
+          <div className="flex gap-3 text-xs mt-2">
+            {contractGender.male > 0 && <span className="text-blue-600">M: {contractGender.male}</span>}
+            {contractGender.female > 0 && <span className="text-pink-600">F: {contractGender.female}</span>}
+            {contractGender.other > 0 && <span className="text-emerald-600">O: {contractGender.other}</span>}
+          </div>
+        </div>
+
+        {/* Intern */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <p className="text-sm text-emerald-600">Intern</p>
+          <h2 className="text-2xl font-bold text-slate-900 mt-1">
+            {intern.length}
+          </h2>
+          <div className="flex gap-3 text-xs mt-2">
+            {internGender.male > 0 && <span className="text-blue-600">M: {internGender.male}</span>}
+            {internGender.female > 0 && <span className="text-pink-600">F: {internGender.female}</span>}
+            {internGender.other > 0 && <span className="text-emerald-600">O: {internGender.other}</span>}
+          </div>
+        </div>
+
+      </div>
+
+
+
+
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200">
         {/* Controls */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 border-b bg-slate-50">
@@ -173,7 +276,7 @@ const Employee = () => {
                     {/* Name & Email */}
                     <td className="px-4 py-3 flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
-                        {console.log(employee?.photo)}
+             
                         {employee.photo ? (
                           <img
                             src={employee?.photo}

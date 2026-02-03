@@ -26,7 +26,7 @@ function ViewCompany() {
     const fetchCustomer = async () => {
         try {
             const res = await AxiosInstance.get(`/companies/${id}`);
-            console.log(res?.data?.result);
+    
             setFormData(res?.data?.result);
         } catch (error) {
             console.error(error.response?.data);

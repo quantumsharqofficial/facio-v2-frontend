@@ -12,7 +12,7 @@ const Login = () => {
   const refreshToken = localStorage.getItem("refreshToken");
   const user = localStorage.getItem("user");
   const navigate = useNavigate();
-  console.log("test");
+  // console.log("test");
  
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,7 +29,7 @@ const Login = () => {
     emailInputRef.current?.focus();
   }, []);
 
-  console.log("test 1");
+  // console.log("test 1");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,12 +39,12 @@ const Login = () => {
         password,
       });
 
-      console.log("Login success:", response);
+      // console.log("Login success:", response);
 
       const { accessToken, refreshToken, user } = response?.data?.result;
-      console.log("accessToken", accessToken);
-      console.log("refreshToken", refreshToken);
-      console.log("user", user);
+      // console.log("accessToken", accessToken);
+      // console.log("refreshToken", refreshToken);
+      // console.log("user", user);
 
 
 

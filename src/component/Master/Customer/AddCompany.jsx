@@ -72,13 +72,13 @@ function AddCompany() {
         }
 
         try {
-            console.log("Submitting FormData...");
+            // console.log("Submitting FormData...");
             const response = await AxiosInstance.post('/companies/', data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Company created successfully:", response.data);
+            // console.log("Company created successfully:", response.data);
             // Optional: Show success feedback or redirect
             alert("Company created successfully!");
         } catch (error) {

@@ -11,7 +11,7 @@ const UserList = () => {
     const fetchUsers = async () => {
         try {
             const res = await AxiosInstance.get(`/companies/${id}/users`);
-            console.log(res?.data?.result);
+      
             setUsers(res?.data?.result);
         }
         catch (error) {
