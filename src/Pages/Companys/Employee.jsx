@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../../utilits/axiosInstance";
 import Card from "../../component/Cards/Card";
+import textImage from "../../../../-facio-v2-backend/uploads/employees/photos/6981b94fd2e29e347b39032d_2026-02-03.png"
 
 const Employee = () => {
   const navigate = useNavigate();
@@ -276,16 +277,27 @@ const Employee = () => {
                     {/* Name & Email */}
                     <td className="px-4 py-3 flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
-             
+
                         {employee.photo ? (
-                          <img
-                            src={employee?.photo}
+                          <>
+
+                            <img
+                              src={employee?.photo}
+                              alt="Profile"
+                              className="h-full w-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                            {/* <img
+                            src={textImage}
                             alt="Profile"
                             className="h-full w-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = "none";
-                            }}
-                          />
+                            }} 
+                              /> */}
+                          </>
                         ) : (
                           <UserCircle className="text-indigo-600" size={20} />
                         )}
