@@ -293,7 +293,7 @@ const AddEmployee = () => {
             joiningDate: basic.joiningDate || undefined,
             companyId: user.companyId,
             password: basic.password || undefined,
-            status: basic.password ? "ACTIVE" : "INACTIVE",
+            status: basic.status || "INACTIVE",
           };
           const res = await AxiosInstance.post("/employees/", payload);
           if (res?.data?.success) {

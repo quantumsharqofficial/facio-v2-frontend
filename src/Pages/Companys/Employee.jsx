@@ -108,9 +108,8 @@ const Employee = () => {
       </div>
 
       {/* Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
 
-        {/* Total Employees */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-sm text-slate-500">Total Employees</p>
           <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -123,7 +122,6 @@ const Employee = () => {
           </div>
         </div>
 
-        {/* Full Time */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-sm text-indigo-600">Full Time</p>
           <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -136,7 +134,6 @@ const Employee = () => {
           </div>
         </div>
 
-        {/* Part Time */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-sm text-blue-600">Part Time</p>
           <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -148,8 +145,6 @@ const Employee = () => {
             {partTimeGender.other > 0 && <span className="text-emerald-600">O: {partTimeGender.other}</span>}
           </div>
         </div>
-
-        {/* Contract */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-sm text-amber-600">Contract</p>
           <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -162,7 +157,6 @@ const Employee = () => {
           </div>
         </div>
 
-        {/* Intern */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-sm text-emerald-600">Intern</p>
           <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -175,7 +169,7 @@ const Employee = () => {
           </div>
         </div>
 
-      </div>
+      </div> */}
 
 
 
