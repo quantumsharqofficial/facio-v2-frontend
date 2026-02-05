@@ -389,7 +389,6 @@ const AddEmployee = () => {
     } catch (error) {
       console.error("Error saving:", error);
       const msg = error.response?.data?.message || "Failed to save";
-      alert(typeof msg === "string" ? msg : JSON.stringify(msg));
       return false;
     } finally {
       setLoading(false);

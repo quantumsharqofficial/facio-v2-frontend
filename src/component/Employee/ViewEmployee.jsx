@@ -182,40 +182,74 @@ const ViewEmployee = () => {
   );
 
   const renderWork = () => {
-    const days = work?.customWorkingDays || {};
-    const labels = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
-    const activeDays = Object.keys(labels).filter((d) => days[d]).map((d) => labels[d]);
+    const workingDays = work?.customWorkingDays || [];
+
+    const dayLabels = {
+      1: "Monday",
+      2: "Tuesday",
+      3: "Wednesday",
+      4: "Thursday",
+      5: "Friday",
+      6: "Saturday",
+      7: "Sunday"
+
+    };
+
+    const activeDays = workingDays
+      .map((d) => dayLabels[d])
+      .filter(Boolean);
+
     return (
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Employment Type</label>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Employment Type
+            </label>
             <p className="text-slate-900">{val(work?.employmentType)}</p>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Source of Hire</label>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Source of Hire
+            </label>
             <p className="text-slate-900">{val(work?.sourceOfHire)}</p>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Working Days</label>
-            <p className="text-slate-900">{activeDays.length ? activeDays.join(", ") : "—"}</p>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Working Days
+            </label>
+            <p className="text-slate-900">
+              {activeDays.length ? activeDays.join(", ") : "—"}
+            </p>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Department</label>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Department
+            </label>
             <p className="text-slate-900">{val(work?.department)}</p>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Designation</label>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Designation
+            </label>
             <p className="text-slate-900">{val(work?.designation)}</p>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Location</label>
+            <label className="block text-sm font-medium text-slate-500 mb-1">
+              Location
+            </label>
             <p className="text-slate-900">{val(work?.location)}</p>
           </div>
         </div>
       </div>
     );
   };
+
 
   const renderContact = () => {
     const addr = (a) => {

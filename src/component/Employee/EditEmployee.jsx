@@ -407,10 +407,30 @@ const EditEmployee = () => {
           }
           return true;
         }
-        case 2:
+        case 2: {
           endpoint = `/employees/${id}/work`;
-          payload = work;
+
+          const dayMap = {
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5,
+            saturday: 6,
+            sunday: 7,
+          };
+
+          const workingDaysArray = Object.entries(work.customWorkingDays)
+            .filter(([_, v]) => v === true)
+            .map(([k]) => dayMap[k]);
+
+          payload = {
+            ...work,
+            customWorkingDays: workingDaysArray,
+          };
           break;
+        }
+
         case 3:
           endpoint = `/employees/${id}/contact`;
           payload = contact;
