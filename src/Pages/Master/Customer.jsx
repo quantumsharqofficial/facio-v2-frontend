@@ -191,7 +191,14 @@ const Customer = () => {
 
                     <td className="px-4 py-3 flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <UserCircle className="text-indigo-600" size={20} />
+                        {c?.logoUrl ?
+                          <img src={c?.logoUrl || "/default-logo.png"} alt="Logo" />
+                          :
+                          <UserCircle
+                            size={20}
+                            className="text-indigo-600"
+                          />
+                        }
                       </div>
                       <div>
                         <p className="font-medium text-slate-800">{c.name}</p>
@@ -229,12 +236,8 @@ const Customer = () => {
                         <Eye
                           className="cursor-pointer"
                           size={20}
-                          onClick={() => navigate(`/view-user/${c._id}`)} />
-                        {/* <Edit2
-                          className="cursor-pointer text-indigo-600"
-                          size={16}
-                          onClick={() => navigate(`/edit-company/${c._id}`)}
-                        /> */}
+                          onClick={() => navigate(`/view-company/${c._id}`)} />
+
                       </div>
                     </td>
                   </tr>

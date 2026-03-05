@@ -11,7 +11,7 @@ const UserList = () => {
     const fetchUsers = async () => {
         try {
             const res = await AxiosInstance.get(`/companies/${id}/users`);
-      
+
             setUsers(res?.data?.result);
         }
         catch (error) {
@@ -57,7 +57,8 @@ const UserList = () => {
                                 <th className="px-4 py-3 ">#</th>
                                 <th className="px-4 py-3 ">Email</th>
                                 <th className="px-4 py-3 ">Role</th>
-                                <th className="px-4 py-3 ">View</th>
+                                <th className="px-4 py-3 ">Status</th>
+                                {/* <th className="px-4 py-3 ">View</th> */}
                             </tr>
                         </thead>
 
@@ -90,13 +91,25 @@ const UserList = () => {
                                         </td>
 
                                         <td className="px-4 py-3">
+                                            <span
+                                                className={`px-2 py-1 text-sm font-medium rounded-full
+                                                    ${u.status === "ACTIVE"
+                                                        ? "bg-green-100 text-green-700"
+                                                        : "bg-red-100 text-red-700"
+                                                    }`}
+                                            >
+                                                {u.status}
+                                            </span>
+                                        </td>
+
+                                        {/* <td className="px-4 py-3">
                                             <div className="flex justify-center gap-3">
                                                 <Eye
                                                     className="cursor-pointer"
                                                     size={20}
                                                     onClick={() => navigate(`/view-user/${u._id}`)} />
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))
                             )}

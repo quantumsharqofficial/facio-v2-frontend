@@ -11,6 +11,7 @@ const AddUser = () => {
     password: "",
     confirmPassword: "",
     role: "",
+    companyId: id || "",
   });
 
 

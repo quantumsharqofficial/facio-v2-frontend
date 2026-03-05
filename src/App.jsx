@@ -23,6 +23,7 @@ import AddUser from "./component/Master/User/AddUser";
 import UserList from "./component/Master/User/UserList";
 import ViewUser from "./component/Master/User/ViewUser";
 import EditUser from "./component/Master/User/EditUser";
+import Organization from "./Pages/Companys/Organization";
 
 function AppLayout() {
   const navigate = useNavigate();
@@ -142,6 +143,12 @@ function AppLayout() {
                 <Expenses />
               </RoleRoute>
             } />
+            <Route path="/organization" element={
+              <RoleRoute allowedRoles={["COMPANY_ADMIN"]}>
+                <Organization />
+              </RoleRoute>
+            } />
+            
           </Routes>
         </div>
       </div>

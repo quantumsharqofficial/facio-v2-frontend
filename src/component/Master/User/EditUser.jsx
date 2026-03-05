@@ -128,16 +128,16 @@ const EditUser = () => {
                         <option value="MANAGER">Manager</option>
                         <option value="HR">HR</option>
                     </select>
-
+                    <hr />
 
                     {/* Buttons */}
-                    <div className="flex justify-end gap-3 pt-6">
+                    <div className="flex justify-between gap-3 ">
                         <button
                             type="button"
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate(-2)}
                             className="px-4 py-2 text-sm border border-slate-300 rounded-xl hover:bg-slate-100"
                         >
-                            Cancel
+                            back
                         </button>
 
                         <button
@@ -145,14 +145,13 @@ const EditUser = () => {
                             disabled={loading}
                             className="px-5 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl disabled:opacity-50"
                         >
-                            {loading ? "Creating..." : "Create User"}
+                            {loading ? "Updating..." : "Update  User"}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     );
-
 };
 
 export default EditUser;

@@ -19,6 +19,7 @@ import logo from "../assets/logo.png";
 
 
 
+
 /* ================= COMPONENT ================= */
 const Sidebar = () => {
   const location = useLocation();
@@ -53,6 +54,7 @@ const Sidebar = () => {
       { name: "Attendance", path: "/attendance", icon: Clock },
       { name: "Leave", path: "/leave", icon: CalendarCheck },
       { name: "Expenses", path: "/expense", icon: Wallet },
+      {name:"Organization",path:"/organization",icon:Package}
     ], HR: [
       // { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
       { name: "Employee", path: "/employee", icon: Users },

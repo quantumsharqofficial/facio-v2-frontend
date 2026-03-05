@@ -62,9 +62,9 @@ const AddEmployee = () => {
     department: "",
     designation: "",
     joiningDate: "",
-    createLogin: true,
+    createLogin: false,
     password: "",
-    status: "INACTIVE",
+
   });
 
   // Personal Info State
@@ -293,7 +293,8 @@ const AddEmployee = () => {
             joiningDate: basic.joiningDate || undefined,
             companyId: user.companyId,
             password: basic.password || undefined,
-            status: basic.status || "INACTIVE",
+            createLogin: basic.createLogin,
+
           };
           const res = await AxiosInstance.post("/employees/", payload);
           if (res?.data?.success) {
@@ -337,11 +338,31 @@ const AddEmployee = () => {
           setCompletedTabs((prev) => [...new Set([...prev, activeTab])]);
           return true;
 
-        case 2: // Work
+        case 2: {
           endpoint = `/employees/${employeeId}/work`;
-          payload = work;
-          protocol = "put";
+
+          const dayMap = {
+            monday: 1,
+            tuesday: 2,
+            wednesday: 3,
+            thursday: 4,
+            friday: 5,
+            saturday: 6,
+            sunday: 7,
+          };
+
+          const workingDaysArray = Object.entries(work.customWorkingDays)
+            .filter(([_, v]) => v === true)
+            .map(([k]) => dayMap[k]);
+
+          payload = {
+            ...work,
+            customWorkingDays: workingDaysArray,
+          };
+          protocol = "put"; 
           break;
+        }
+
         case 3: // Contact
           endpoint = `/employees/${employeeId}/contact`;
           payload = contact;

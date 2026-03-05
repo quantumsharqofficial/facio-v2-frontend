@@ -4,17 +4,34 @@ import AxiosInstance from "../../../utilits/axiosInstance";
 function AddCompany() {
     const [formData, setFormData] = useState({
         name: "",
-      phone: "",
+        logo: null,
+        phone: "",
         address: "",
+        industryType: "",
         city: "",
         state: "",
         pincode: "",
-        checkInTime: "09:30",
-        checkOutTime: "18:30",
-        lateAfter: "10:00",
-        halfDayAfter: "13:00",
-        weeklyOffs: [0], // Default Sunday
     });
+    const industryOptions = [
+        "Restaurent/Food Service",
+        "Retail",
+        "IT/Software",
+        "Manufacturing",
+        "Healthcare",
+        "Education",
+        "Finance",
+        "Real Estate",
+        "Hospitality",
+        "Transportation/Logistics",
+        "Construction",
+        "Entertainment/Media",
+        "Telecommunications",
+        "Energy/Utilities",
+        "Government/Public Sector",
+        "Non-Profit/NGO",
+        "Other",
+    ];
+
 
     const [logoFile, setLogoFile] = useState(null);
     const [logoPreview, setLogoPreview] = useState(null);
@@ -35,57 +52,31 @@ function AddCompany() {
         }
     };
 
-    const handleWeeklyOffChange = (dayIndex) => {
-        setFormData((prev) => {
-            const currentOffs = prev.weeklyOffs;
-            if (currentOffs.includes(dayIndex)) {
-                return { ...prev, weeklyOffs: currentOffs.filter((d) => d !== dayIndex) };
-            } else {
-                return { ...prev, weeklyOffs: [...currentOffs, dayIndex] };
-            }
-        });
-    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const data = new FormData();
-        // Append simple fields
+
         Object.keys(formData).forEach((key) => {
-            if (key !== 'weeklyOffs') {
-                data.append(key, formData[key]);
-            }
+            data.append(key, formData[key]);
         });
 
-        // Append complex fields
-        data.append('attendancePolicy', JSON.stringify({
-            lateAfter: formData.lateAfter,
-            halfDayAfter: formData.halfDayAfter,
-        }));
-
-        // Append weeklyOffs array
-        formData.weeklyOffs.forEach(off => data.append('weeklyOffs[]', off));
-
-        // Append logo file
         if (logoFile) {
-            data.append('logo', logoFile);
+            data.append("logo", logoFile);
         }
 
         try {
-            // console.log("Submitting FormData...");
-            const response = await AxiosInstance.post('/companies/', data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+            await AxiosInstance.post("/companies/", data, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
-            // console.log("Company created successfully:", response.data);
-            // Optional: Show success feedback or redirect
             alert("Company created successfully!");
         } catch (error) {
-            console.error("Error creating company:", error);
             alert(error.response?.data?.message || "Error creating company");
         }
     };
+
 
     return (
         <div className="ml-64 px-6 py-8 min-h-screen">
@@ -109,7 +100,7 @@ function AddCompany() {
                 </h2>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <input
                         type="text"
                         name="name"
@@ -120,7 +111,7 @@ function AddCompany() {
                         required
                     />
 
-               
+
                     <input
                         type="tel"
                         name="phone"
@@ -129,6 +120,21 @@ function AddCompany() {
                         placeholder="Phone"
                         className="w-full px-4 py-2.5 border rounded-lg"
                     />
+                    <select
+                        name="industryType"
+                        value={formData.industryType}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2.5 border rounded-lg text-slate-700"
+                        required
+                    >
+                        <option value="">Select Industry Type</option>
+                        {industryOptions.map((industry) => (
+                            <option key={industry} value={industry}>
+                                {industry}
+                            </option>
+                        ))}
+                    </select>
+
 
 
                     <div className="md:col-span-2">
@@ -212,74 +218,6 @@ function AddCompany() {
                         placeholder="Pincode"
                         className="w-full px-4 py-2.5 border rounded-lg"
                     />
-                </div>
-
-                {/* Settings Section */}
-                <h2 className="text-lg font-semibold text-slate-800 mt-8 mb-6">
-                    Settings & Policies
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Check-in Time</label>
-                        <input
-                            type="time"
-                            name="checkInTime"
-                            value={formData.checkInTime}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Check-out Time</label>
-                        <input
-                            type="time"
-                            name="checkOutTime"
-                            value={formData.checkOutTime}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Late After</label>
-                        <input
-                            type="time"
-                            name="lateAfter"
-                            value={formData.lateAfter}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Half-day After</label>
-                        <input
-                            type="time"
-                            name="halfDayAfter"
-                            value={formData.halfDayAfter}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                </div>
-
-                {/* Weekly Offs */}
-                <div className="mt-8">
-                    <label className="block text-sm font-medium text-slate-700 mb-3">Weekly Offs</label>
-                    <div className="flex flex-wrap gap-4">
-                        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
-                            <button
-                                key={day}
-                                type="button"
-                                onClick={() => handleWeeklyOffChange(index)}
-                                className={`px-4 py-2 rounded-lg border transition-colors ${formData.weeklyOffs.includes(index)
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-                                    }`}
-                            >
-                                {day}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Actions */}

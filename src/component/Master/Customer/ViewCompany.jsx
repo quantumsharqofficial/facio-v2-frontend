@@ -6,27 +6,22 @@ import { Edit2 } from "lucide-react";
 function ViewCompany() {
     const [formData, setFormData] = useState({
         name: "",
+        logo: null,
         phone: "",
         address: "",
+        industryType: "",
         city: "",
         state: "",
         pincode: "",
-        checkInTime: "09:30",
-        checkOutTime: "18:30",
-        lateAfter: "10:00",
-        halfDayAfter: "13:00",
-        weeklyOffs: [0], // Default Sunday
     });
 
-    const [logoFile, setLogoFile] = useState(null);
-    const [logoPreview, setLogoPreview] = useState(null);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const fetchCustomer = async () => {
         try {
             const res = await AxiosInstance.get(`/companies/${id}`);
-    
+
             setFormData(res?.data?.result);
         } catch (error) {
             console.error(error.response?.data);
@@ -50,11 +45,13 @@ function ViewCompany() {
                         View company information
                     </p>
                 </div>
-                <button className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl flex items-center gap-2">
+                <button
+                 onClick={() => navigate(`/edit-company/${id}`)}
+                 className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl flex items-center gap-2">
                     <Edit2
                         className="cursor-pointer text-white"
                         size={18}
-                        onClick={() => navigate(`/edit-company/${id}`)}
+
                     />
                     Update
                 </button>
@@ -70,7 +67,7 @@ function ViewCompany() {
                 </h2>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <input
                         type="text"
                         name="name"
@@ -84,6 +81,14 @@ function ViewCompany() {
                         type="tel"
                         name="phone"
                         value={formData.phone}
+                        placeholder="Phone"
+                        className="w-full px-4 py-2.5 border rounded-lg"
+                    />
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        value={formData.industryType}
                         placeholder="Phone"
                         className="w-full px-4 py-2.5 border rounded-lg"
                     />
@@ -105,10 +110,10 @@ function ViewCompany() {
                                     Choose File
                                 </label>
                             </div>
-                            {logoPreview && (
+                            {formData?.logoUrl && (
                                 <div className="relative w-16 h-16 rounded-lg border border-slate-200 overflow-hidden">
                                     <img
-                                        src={logoPreview}
+                                        src={formData?.logoUrl}
                                         alt="Logo preview"
                                         className="w-full h-full object-cover"
                                     />
@@ -160,69 +165,6 @@ function ViewCompany() {
                         placeholder="Pincode"
                         className="w-full px-4 py-2.5 border rounded-lg"
                     />
-                </div>
-
-                {/* Settings Section */}
-                <h2 className="text-lg font-semibold text-slate-800 mt-8 mb-6">
-                    Settings & Policies
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Check-in Time</label>
-                        <input
-                            type="time"
-                            name="checkInTime"
-                            value={formData.checkInTime}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Check-out Time</label>
-                        <input
-                            type="time"
-                            name="checkOutTime"
-                            value={formData.checkOutTime}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Late After</label>
-                        <input
-                            type="time"
-                            name="lateAfter"
-                            value={formData.lateAfter}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Half-day After</label>
-                        <input
-                            type="time"
-                            name="halfDayAfter"
-                            value={formData.halfDayAfter}
-                            className="w-full px-4 py-2.5 border rounded-lg"
-                        />
-                    </div>
-                </div>
-
-                {/* Weekly Offs */}
-                <div className="mt-8">
-                    <label className="block text-sm font-medium text-slate-700 mb-3">Weekly Offs</label>
-                    <div className="flex flex-wrap gap-4">
-                        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
-                            <button
-                                key={day}
-                                type="button"
-                                className={`px-4 py-2 rounded-lg border transition-colors ${formData.weeklyOffs.includes(index)
-                                    ? "bg-blue-600 text-white border-blue-600"
-                                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-                                    }`}
-                            >
-                                {day}
-                            </button>
-                        ))}
-                    </div>
                 </div>
             </form>
         </div>

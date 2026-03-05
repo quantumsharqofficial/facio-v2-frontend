@@ -17,7 +17,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../../utilits/axiosInstance";
 import Card from "../../component/Cards/Card";
-import textImage from "../../../../-facio-v2-backend/uploads/employees/photos/6981b94fd2e29e347b39032d_2026-02-03.png"
 
 const Employee = () => {
   const navigate = useNavigate();
